@@ -1,0 +1,86 @@
+# Quando este workflow deve ser executado?
+
+on:
+
+  push:
+
+    branches: [ main ]
+
+  pull_request:
+
+    branches: [ main ]
+
+# Definindo os trabalhos (jobs) que serao executados
+
+jobs:
+
+  # Job 1: Verificacoes basicas
+
+  verificacoes-basicas:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: 1. Baixando o codigo do repositorio
+
+      uses: actions/checkout@v4      
+
+    - name: 2. Verificando estrutura do projeto
+
+      run: |
+
+        echo "Listando arquivos do projeto:"
+
+        ls -la
+
+        echo ""
+
+        echo "Verificando se arquivos essenciais existem:"
+
+        if [ -f "app.js" ]; then
+
+          echo "app.js encontrado"
+
+        else
+
+          echo "app.js nao encontrado"
+
+          exit 1
+
+        fi
+
+    - name: 3. Configurando Node.js
+
+      uses: actions/setup-node@v4
+
+      with:
+
+        node-version: '18'
+
+    - name: 4. Executando a aplicacoes
+
+      run: |
+
+        echo "Iniciando a aplicacoes..."
+
+        node app.js
+
+        echo "Aplicacoes executada com sucesso!"        
+
+    - name: 5. Mensagem de sucesso
+
+      run: |
+
+        echo "Parabaens! Seu primeiro pipeline de CI esta funcionando!"
+
+        echo "Estaticas da execucao:"
+
+        echo "   - Repositorio: ${{ github.repository }}"
+
+        echo "   - Branch: ${{ github.ref_name }}"
+
+        echo "   - Commit: ${{ github.sha }}"
+
+        echo "   - Autor: ${{ github.actor }}"
+----------------Q 
